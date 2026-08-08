@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 /**
- * Entity representing a globally registered chess player.
+ * Represents a globally registered chess player.
+ 
  *
- * <p>Stores static identity information that belongs to a player across all tournaments.
- * Tournament-specific runtime state (score, color history, bye status) is maintained
- * separately in {@link TournamentPlayer}.</p>
+ * This is the static identity table — it stores information
+ * that belongs to a player regardless of which tournament they are in.
+ * Tournament-specific state (score, color history, etc.) lives in
+ * TournamentPlayer (the junction entity).
  */
 @Entity
 @Table(name = "players")
@@ -23,42 +25,40 @@ import java.util.UUID;
 @Builder
 public class Player {
 
-    /** Primary key. Auto-generated UUID, immutable after creation. */
+    /**
+     * Unique player identifier.
+     * Generated as a UUID so IDs are globally unique and safe to expose in URLs.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "pid", updatable = false, nullable = false)
     private UUID pid;
 
-    /** Full legal name of the player. */
+    /** Full name of the player. */
     @Column(name = "p_name", nullable = false, length = 100)
     private String pName;
 
-    /** Geographic state or region the player represents. */
+    /** Player's geographic state or region. Optional. */
     @Column(name = "state", length = 50)
     private String state;
-
-    /** Player's age in years. Used for age-category prize eligibility. */
+    //age of the player
     @Column(name = "age", nullable = false)
     private int age;
-
-    /** City of residence. */
+    //city of the player
     @Column(name = "city", nullable = false)
     private String city;
-
-    /** Country of residence or federation affiliation. */
+    //country of the player
     @Column(name = "country", nullable = false)
     private String country;
 
-    /**
-     * Gender identifier. Single character: {@code "M"}, {@code "F"}, or {@code "O"}.
-     * Used for gender-category prize eligibility.
-     */
+    //gender
     @Column(name = "gender", nullable = false, length = 1)
     private String gender;
-
+    
     /**
-     * Global FIDE rating. Defaults to {@code 0} for unrated players.
-     * Used as a tiebreaker when players share the same score bracket during pairing.
+     * Global FIDE rating.
+     * Defaults to 0 for unrated players.
+     * This rating is used for initial seeding/sorting when scores are tied.
      */
     @Column(name = "fide_rating", nullable = false)
     private int fideRating = 0;
