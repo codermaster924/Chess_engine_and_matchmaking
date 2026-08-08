@@ -1,0 +1,27 @@
+# Sensitive configuration — credentials must not be committed
+src/main/resources/application.properties
+src/main/resources/application-local.properties
+src/main/resources/application-dev.properties
+
+# Design documents
+*.docx
+*.doc
+*.pdf
+
+# Maven build output
+target/
+*.jar
+*.war
+*.class
+
+# IDE metadata
+.idea/
+*.iml
+.vscode/
+*.project
+*.classpath
+.settings/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
